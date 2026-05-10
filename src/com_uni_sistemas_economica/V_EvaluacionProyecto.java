@@ -5,13 +5,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class V_EvaluacionProyecto extends JInternalFrame {
-    // Componentes de entrada
-    public JTextField txtMonto, txtTasa, txtPlazo;
-    public JTextField txtFlujoCaja;
+    public JTextField txtMonto, txtTasa, txtPlazo, txtFlujoCaja;
     public JComboBox<String> cbFrecuencia;
-    public JButton btnCalcular;
-    
-    // Componentes de salida
+    public JButton btnCalcular, btnLimpiar, btnExportar; // Agregados
     public JTable tablaResultados;
     public DefaultTableModel modeloTabla;
     public JProgressBar barraProgreso;
@@ -19,64 +15,84 @@ public class V_EvaluacionProyecto extends JInternalFrame {
 
     public V_EvaluacionProyecto() {
         super("Análisis de Inversión: VAN y TIR", true, true, true, true);
-        setSize(750, 600);
-        setLayout(new BorderLayout());
+        setSize(850, 650);
+        setLayout(new BorderLayout(10, 10));
 
-        JTabbedPane pestañas = new JTabbedPane();
+        // --- PANEL IZQUIERDO (CONFIGURACIÓN) ---
+        JPanel panelIzquierdo = new JPanel(new BorderLayout(10, 10));
+        panelIzquierdo.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        panelIzquierdo.setPreferredSize(new Dimension(320, 0));
 
-        // --- PANEL DE CONFIGURACIÓN (ENTRADA) ---
-        JPanel panelConfig = new JPanel(new GridLayout(8, 2, 10, 10));
-        panelConfig.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        
-        panelConfig.add(new JLabel("Inversión Inicial (C$):"));
-        txtMonto = new JTextField("5000"); 
-        panelConfig.add(txtMonto);
-        
-        panelConfig.add(new JLabel("Tasa de Interés (%):"));
-        txtTasa = new JTextField("12"); 
-        panelConfig.add(txtTasa);
+        JPanel panelCampos = new JPanel(new GridLayout(10, 1, 5, 5));
+        panelCampos.setBorder(BorderFactory.createTitledBorder("Parámetros de Inversión"));
 
-        panelConfig.add(new JLabel("Frecuencia de la Tasa:"));
+        panelCampos.add(new JLabel("Inversión Inicial (C$):"));
+        txtMonto = new JTextField("5000");
+        panelCampos.add(txtMonto);
+
+        panelCampos.add(new JLabel("Tasa de Interés (%):"));
+        txtTasa = new JTextField("12");
+        panelCampos.add(txtTasa);
+
+        panelCampos.add(new JLabel("Frecuencia:"));
         cbFrecuencia = new JComboBox<>(new String[]{"Anual", "Semestral", "Trimestral", "Mensual"});
-        panelConfig.add(cbFrecuencia);
-        
-        panelConfig.add(new JLabel("Plazo (Periodos):"));
-        txtPlazo = new JTextField("12"); 
-        panelConfig.add(txtPlazo);
+        panelCampos.add(cbFrecuencia);
 
-        panelConfig.add(new JLabel("Flujo de Caja Estimado (C$):"));
-        txtFlujoCaja = new JTextField("500"); 
-        panelConfig.add(txtFlujoCaja);
+        panelCampos.add(new JLabel("Plazo (Periodos):"));
+        txtPlazo = new JTextField("12");
+        panelCampos.add(txtPlazo);
+
+        panelCampos.add(new JLabel("Flujo de Caja Mensual (C$):"));
+        txtFlujoCaja = new JTextField("500");
+        panelCampos.add(txtFlujoCaja);
+
+        // Botones de Acción
+        btnCalcular = new JButton("Ejecutar Análisis ✅");
+        btnLimpiar = new JButton("Limpiar Campos 🧹");
         
-        btnCalcular = new JButton("Ejecutar Análisis Financiero");
-        panelConfig.add(btnCalcular);
-        
+        JPanel pnlBotonesAccion = new JPanel(new GridLayout(1, 2, 5, 5));
+        pnlBotonesAccion.add(btnCalcular);
+        pnlBotonesAccion.add(btnLimpiar);
+
+        panelIzquierdo.add(panelCampos, BorderLayout.NORTH);
+        panelIzquierdo.add(pnlBotonesAccion, BorderLayout.CENTER);
+
         barraProgreso = new JProgressBar();
         barraProgreso.setStringPainted(true);
-        panelConfig.add(barraProgreso);
+        panelIzquierdo.add(barraProgreso, BorderLayout.SOUTH);
 
-        // Etiquetas de Resultados
-        lblVAN = new JLabel("VAN: C$ 0.00");
-        lblVAN.setFont(new Font("Arial", Font.BOLD, 14));
-        lblVAN.setForeground(new Color(0, 102, 51)); // Verde oscuro
-        panelConfig.add(lblVAN);
+        // --- PANEL CENTRAL (RESULTADOS Y TABLA) ---
+        JPanel panelCentro = new JPanel(new BorderLayout(10, 10));
+        panelCentro.setBorder(BorderFactory.createEmptyBorder(15, 0, 15, 15));
 
-        lblTIR = new JLabel("TIR: 0.00 %");
-        lblTIR.setFont(new Font("Arial", Font.BOLD, 14));
-        lblTIR.setForeground(new Color(0, 51, 153)); // Azul oscuro
-        panelConfig.add(lblTIR);
+        // Dashboard de Resultados
+        JPanel pnlDashboard = new JPanel(new GridLayout(1, 2, 10, 10));
+        lblVAN = new JLabel("VAN: C$ 0.00", SwingConstants.CENTER);
+        lblVAN.setFont(new Font("Arial", Font.BOLD, 18));
+        lblVAN.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
-        // --- PANEL DE TABLA (RESULTADOS) ---
-        JPanel panelTabla = new JPanel(new BorderLayout());
+        lblTIR = new JLabel("TIR: 0.00 %", SwingConstants.CENTER);
+        lblTIR.setFont(new Font("Arial", Font.BOLD, 18));
+        lblTIR.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+
+        pnlDashboard.add(lblVAN);
+        pnlDashboard.add(lblTIR);
+
+        // Tabla
         String[] columnas = {"Periodo", "Cuota", "Interés", "Capital", "Saldo"};
         modeloTabla = new DefaultTableModel(columnas, 0);
         tablaResultados = new JTable(modeloTabla);
-        panelTabla.add(new JScrollPane(tablaResultados), BorderLayout.CENTER);
+        JScrollPane scrollPane = new JScrollPane(tablaResultados);
 
-        // Agregar pestañas
-        pestañas.addTab("Parámetros de Inversión", panelConfig);
-        pestañas.addTab("Tabla de Amortización", panelTabla);
+        // Botón Exportar al fondo de la tabla
+        btnExportar = new JButton("Exportar Resultados a CSV 📄");
+        btnExportar.setPreferredSize(new Dimension(0, 40));
 
-        add(pestañas, BorderLayout.CENTER);
+        panelCentro.add(pnlDashboard, BorderLayout.NORTH);
+        panelCentro.add(scrollPane, BorderLayout.CENTER);
+        panelCentro.add(btnExportar, BorderLayout.SOUTH);
+
+        add(panelIzquierdo, BorderLayout.WEST);
+        add(panelCentro, BorderLayout.CENTER);
     }
 }
