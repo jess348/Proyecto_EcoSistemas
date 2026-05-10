@@ -50,12 +50,12 @@ public class V_EvaluacionProyecto extends JInternalFrame {
         btnCalcular = new JButton("Ejecutar Análisis ✅");
         btnLimpiar = new JButton("Limpiar Campos 🧹");
         
-        JPanel pnlBotonesAccion = new JPanel(new GridLayout(1, 2, 5, 5));
-        pnlBotonesAccion.add(btnCalcular);
-        pnlBotonesAccion.add(btnLimpiar);
+        JPanel pnlBotonAccion = new JPanel(new GridLayout(1, 2, 5, 5));
+        pnlBotonAccion.add(btnCalcular);
+        pnlBotonAccion.add(btnLimpiar);
 
         panelIzquierdo.add(panelCampos, BorderLayout.NORTH);
-        panelIzquierdo.add(pnlBotonesAccion, BorderLayout.CENTER);
+        panelIzquierdo.add(pnlBotonAccion, BorderLayout.CENTER);
 
         barraProgreso = new JProgressBar();
         barraProgreso.setStringPainted(true);
