@@ -15,7 +15,7 @@ public class V_EvaluacionProyecto extends JInternalFrame {
 
     public V_EvaluacionProyecto() {
         super("Análisis de Inversión: VAN y TIR", true, true, true, true);
-        setSize(850, 650);
+        setSize(920, 410);
         setLayout(new BorderLayout(10, 10));
 
         // --- PANEL IZQUIERDO (CONFIGURACIÓN) ---
