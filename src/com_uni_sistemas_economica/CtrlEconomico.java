@@ -7,11 +7,11 @@ import java.awt.event.ActionListener;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
-public class ControladorEconomico implements ActionListener {
-    private V_EvaluacionProyecto vista;
+public class CtrlEconomico implements ActionListener {
+    private FrmEvaluacionProyecto vista;
     private CalculadoraFinanciera modelo;
 
-    public ControladorEconomico(V_EvaluacionProyecto vista, CalculadoraFinanciera modelo) {
+    public CtrlEconomico(FrmEvaluacionProyecto vista, CalculadoraFinanciera modelo) {
         this.vista = vista;
         this.modelo = modelo;
         

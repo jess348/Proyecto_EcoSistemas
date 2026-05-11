@@ -2,8 +2,10 @@ package com_uni_sistemas_economica;
 
 import javax.swing.*;
 import java.awt.BorderLayout;
+import java.awt.Graphics;
 // import com_uni_sistemas_economica.V_Amortizacion;
 // import com_uni_sistemas_economica.V_EvaluacionProyecto;
+import java.awt.Image;
 
 public class MenuPrincipal extends JFrame {
     public JDesktopPane desktop;
@@ -16,7 +18,27 @@ public class MenuPrincipal extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        desktop = new JDesktopPane();
+        desktop = new JDesktopPane(){
+            private Image img;
+
+            @Override
+            protected void paintComponent(Graphics g){
+                super.paintComponent(g);
+                if (img == null) {
+                    try {
+                        img = new ImageIcon(getClass().getResource("/images/imagenEmpresa4.png")).getImage();
+
+                    } catch (Exception e) {
+                        System.err.println("Imagen no encontrada en la ruta especifica. :(");
+                    }
+                }
+                if (img != null) {
+                    g.drawImage(img, 0, 0, getWidth(), getHeight(), this);
+                }
+            }
+        };
+
+        // desktop = new JDesktopPane();
         setContentPane(desktop);
 
         setJMenuBar(createMenuBar());
@@ -49,12 +71,12 @@ private void openSubFrame(String title) {
         switch (title) {
             case "1. Evaluación VAN y TIR":
             // 1. Instanciar la vista y el modelo
-            V_EvaluacionProyecto vEval = new V_EvaluacionProyecto();
+            FrmEvaluacionProyecto vEval = new FrmEvaluacionProyecto();
             CalculadoraFinanciera modelo = new CalculadoraFinanciera();
 
             // 2. VINCULAR EL CONTROLADOR (Paso crítico)
             // Esto ejecuta: vEval.btnCalcular.addActionListener(...)
-            new ControladorEconomico(vEval, modelo);
+            new CtrlEconomico(vEval, modelo);
 
             // 3. Pasar la vista al gestor de ventanas
             ventManager.openInternal(desktop, vEval);
@@ -76,23 +98,24 @@ private void openSubFrame(String title) {
             //     ventManager.openInternal(desktop, new V_ProductividadLaboral());
             //     break;
             
-            // CORREGIDO: Se agregó la tilde en la 'ó'
+            // CORREGIDO:
             // case "4. Depreciación de Activos": 
             //     ventManager.openInternal(desktop, new V_Depreciacion());
             //     break;
 
             // CORREGIDO: Se agregó la 'a' faltante en Alternativas
-            case "5. Comparador de Alternativas":
-                ventManager.openInternal(desktop, new V_Comparador());
+                case "5. Comparador de Alternativas":
+                FrmComparador vComp = new FrmComparador();
+                new CtrlComparador(vComp); // Conectamos el control a vComp
+                ventManager.openInternal(desktop, vComp); // ¡Abrimos vComp en el escritorio!
                 break;
 
             default:
-                // Ventana genérica para los módulos que aún no tienen clase propia
+                //ventanas default o prueba
                 JInternalFrame framePrueba = new JInternalFrame(title, true, true, true, true);
                 framePrueba.setSize(400, 300);
                 framePrueba.add(new JLabel("Módulo en construcción: " + title, SwingConstants.CENTER), BorderLayout.CENTER);
                 
-                // También pasamos las ventanas de prueba por el gestor
                 ventManager.openInternal(desktop, framePrueba);
                 break;
         }

@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class V_EvaluacionProyecto extends JInternalFrame {
+public class FrmEvaluacionProyecto extends JInternalFrame {
     public JTextField txtMonto, txtTasa, txtPlazo, txtFlujoCaja;
     public JComboBox<String> cbFrecuencia;
     public JButton btnCalcular, btnLimpiar, btnExportar; // Agregados
@@ -13,7 +13,7 @@ public class V_EvaluacionProyecto extends JInternalFrame {
     public JProgressBar barraProgreso;
     public JLabel lblVAN, lblTIR;
 
-    public V_EvaluacionProyecto() {
+    public FrmEvaluacionProyecto() {
         super("Análisis de Inversión: VAN y TIR", true, true, true, true);
         setSize(920, 410);
         setLayout(new BorderLayout(10, 10));
@@ -46,7 +46,6 @@ public class V_EvaluacionProyecto extends JInternalFrame {
         txtFlujoCaja = new JTextField("500");
         panelCampos.add(txtFlujoCaja);
 
-        // Botones de Acción
         btnCalcular = new JButton("Ejecutar Análisis ✅");
         btnLimpiar = new JButton("Limpiar Campos 🧹");
         
@@ -61,7 +60,6 @@ public class V_EvaluacionProyecto extends JInternalFrame {
         barraProgreso.setStringPainted(true);
         panelIzquierdo.add(barraProgreso, BorderLayout.SOUTH);
 
-        // --- PANEL CENTRAL (RESULTADOS Y TABLA) ---
         JPanel panelCentro = new JPanel(new BorderLayout(10, 10));
         panelCentro.setBorder(BorderFactory.createEmptyBorder(15, 0, 15, 15));
 
@@ -69,11 +67,11 @@ public class V_EvaluacionProyecto extends JInternalFrame {
         JPanel pnlDashboard = new JPanel(new GridLayout(1, 2, 10, 10));
         lblVAN = new JLabel("VAN: C$ 0.00", SwingConstants.CENTER);
         lblVAN.setFont(new Font("Arial", Font.BOLD, 18));
-        lblVAN.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        lblVAN.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));//verde oscuro
 
         lblTIR = new JLabel("TIR: 0.00 %", SwingConstants.CENTER);
         lblTIR.setFont(new Font("Arial", Font.BOLD, 18));
-        lblTIR.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        lblTIR.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));//verde oscuro
 
         pnlDashboard.add(lblVAN);
         pnlDashboard.add(lblTIR);
