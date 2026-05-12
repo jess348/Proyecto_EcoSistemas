@@ -1,4 +1,4 @@
-package com_uni_sistemas_economica;
+package controllers;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -9,6 +9,8 @@ import java.io.PrintWriter;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+
+import views.FrmComparador;
 
 public class CtrlComparador implements ActionListener  {
 

@@ -1,4 +1,4 @@
-package com_uni_sistemas_economica;
+package utils;
 
 // import java.awt.event.WindowAdapter;
 // import java.awt.event.WindowEvent;

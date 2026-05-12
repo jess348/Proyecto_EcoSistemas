@@ -1,6 +1,14 @@
-package com_uni_sistemas_economica;
+package views;
 
 import javax.swing.*;
+
+import controllers.CtrlComparador;
+import controllers.CtrlEconomico;
+import controllers.CtrlPuntoEquilibrio;
+import models.CalculadoraFinanciera;
+import models.MdlEquilibrioOperativo;
+import utils.VentManager;
+
 import java.awt.BorderLayout;
 import java.awt.Graphics;
 // import com_uni_sistemas_economica.V_Amortizacion;

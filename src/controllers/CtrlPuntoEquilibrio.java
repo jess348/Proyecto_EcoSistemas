@@ -1,8 +1,11 @@
-package com_uni_sistemas_economica;
+package controllers;
 
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
+
+import models.MdlEquilibrioOperativo;
+import views.FrmPuntoEquilibrio;
 
 import java.awt.Color;
 import java.awt.Component;

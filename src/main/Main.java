@@ -1,6 +1,8 @@
-package com_uni_sistemas_economica;
+package main;
 
 import com.formdev.flatlaf.FlatLightLaf; // Importar el tema claro
+
+import views.MenuPrincipal;
 
 import javax.swing.UIManager;
 

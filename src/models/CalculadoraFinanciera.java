@@ -1,4 +1,4 @@
-package com_uni_sistemas_economica;
+package models;
 
 public class CalculadoraFinanciera {
 

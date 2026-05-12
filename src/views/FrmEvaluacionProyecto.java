@@ -1,4 +1,4 @@
-package com_uni_sistemas_economica;
+package views;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
