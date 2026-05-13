@@ -5,11 +5,13 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import models.MdlEquilibrioOperativo;
+import views.FrmAnalisisDialog;
 import views.FrmPuntoEquilibrio;
 
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -23,6 +25,9 @@ public class CtrlPuntoEquilibrio implements ActionListener {
         this.modelo = modelo;
         this.vista.btnSimular.addActionListener(this);
         this.vista.btnExportar.addActionListener(this);
+        //nuevos btn
+        this.vista.btnLimpiar.addActionListener(this);
+        this.vista.btnVerAnalisis.addActionListener(this);
         
     }
 
@@ -32,8 +37,75 @@ public class CtrlPuntoEquilibrio implements ActionListener {
             calcularEquilibrio();
         }else if (e.getSource() == vista.btnExportar) {
             exportar();
+        }else if (e.getSource() == vista.btnLimpiar) {
+            limpiarCampos();
+        }else if (e.getSource() == vista.btnVerAnalisis) {
+            generarDiagnostico();
         }
+
+
+
+
     }
+
+        private void limpiarCampos(){
+            vista.txtCostoVariable.setText("");
+            vista.txtCostosFijos.setText("");
+            vista.txtPrecioVenta.setText("");
+            vista.lblIngresoEquilibrio.setText("0.00");
+            vista.lblUnidadesEquilibrio.setText("0.00");
+        }
+
+        public void generarDiagnostico(){
+
+            try {
+                double cf = Double.parseDouble(vista.txtCostosFijos.getText());
+                double p = Double.parseDouble(vista.txtPrecioVenta.getText());
+                double cv = Double.parseDouble(vista.txtCostoVariable.getText());
+
+                double mcu =  p - cv;
+                double q = cf/ mcu;
+
+                
+                StringBuilder reporte = new StringBuilder();
+                reporte.append("<div style='font-family: \"Segoe UI\", Arial, sans-serif; color: #333;'>");
+                reporte.append("<h2 style='color: #2C3E50; border-bottom: 2px solid #3498DB; padding-bottom: 5px;'>Diagnóstico de Equilibrio Operativo 📊</h2>");
+
+
+                // reporte.append("<h2>Interpretacion de Resultados 📈</h2>");
+                reporte.append("<h3 style='color: #2980B9;'>1. Margen de Contribución Unitario</h3>");
+        reporte.append("<p>Por cada unidad vendida, el negocio genera un margen de <b>C$ ").append(String.format("%.2f", mcu)).append("</b>.</p>");
+        reporte.append("<p>Este monto es el remanente disponible, tras cubrir los costos variables, para absorber los <b>C$ ").append(String.format("%.2f", cf)).append("</b> de costos fijos totales.</p>");
+
+        reporte.append("<h3 style='color: #2980B9;'>2. Volumen Crítico</h3>");
+        if (q > 0) {
+
+            reporte.append("<p style='color: #27AE60;'>Se requiere comercializar un mínimo de <b>").append(String.format("%.2f", q))
+                .append(" unidades</b> para alcanzar el punto donde los ingresos igualan a los egresos (cero utilidades, cero pérdidas).</p>");
+        }
+
+
+
+        reporte.append("<h3 style='color: #2980B9;'>3. Estrategias de Optimización 💡</h3>");
+        reporte.append("<ul style='line-height: 1.6;'>");
+        reporte.append("<li><b>Ajuste de Precios:</b> Un incremento estratégico en el precio de venta reduce el volumen necesario para alcanzar el equilibrio.</li>");
+        reporte.append("<li><b>Eficiencia en Costos Fijos:</b> La reducción de gastos operativos inelásticos (alquiler, salarios base) disminuye directamente la barrera de rentabilidad.</li>");
+        reporte.append("<li><b>Optimización de Costos Variables:</b> Negociar mejores condiciones con proveedores incrementa el margen unitario, facilitando la absorción de los costos fijos.</li>");
+        reporte.append("</ul>");
+        
+        reporte.append("</div>");
+
+                Window own = SwingUtilities.getWindowAncestor(vista);
+                FrmAnalisisDialog diag = new FrmAnalisisDialog(own, "Reporte Gerencial - C&S ", reporte.toString());
+                diag.setVisible(true);
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(vista,"Debe de ingresar datos validos y calcular primero. 🙂");
+            }
+
+
+
+        }
 
 private void calcularEquilibrio() {
         new Thread(() -> {

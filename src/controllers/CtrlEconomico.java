@@ -216,7 +216,7 @@ public class CtrlEconomico implements ActionListener {
             }
 
             Window padre = SwingUtilities.getWindowAncestor(vista);
-            FrmAnalisisDialog diag = new FrmAnalisisDialog(padre, "Reporte Gerencial - C&S", analisis.toString());
+            FrmAnalisisDialog diag = new FrmAnalisisDialog(padre, "Reporte Financiero - C&S", analisis.toString());
             diag.setVisible(true);
 
         } catch (NumberFormatException ex) {

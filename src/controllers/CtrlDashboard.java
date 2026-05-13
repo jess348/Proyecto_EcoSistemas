@@ -54,13 +54,13 @@ public class CtrlDashboard implements ActionListener {
             reporte.append("<h3>1. Liquidez y Operación</h3>");
             if (capital > 0) {
                 reporte.append("<p style='color: #27AE60;'><b>Estado Positivo:</b> El Capital de Trabajo es de C$ ").append(String.format("%.2f", capital))
-                       .append(". Esto indica que la empresa cuenta con recursos suficientes para cubrir sus obligaciones de corto plazo.");
+                    .append(". Esto indica que la empresa cuenta con recursos suficientes para cubrir sus obligaciones de corto plazo.");
             } else {
                 reporte.append("<p style='color: #E74C3C;'><b>Alerta de Liquidez:</b> El Capital de Trabajo es negativo o nulo. Se recomienda revisar la gestión de activos corrientes para evitar interrupciones operativas.");
             }
             reporte.append("</p>");
 
-            // profe, aqui evaluo el margen, le puse colores dependiendo de si pasa de 20 o de 5 para que se entienda mejor
+            //aqui evaluo el margen, le puse colores dependiendo de si pasa de 20 o de 5 para que se entienda mejor
             reporte.append("<h3>2. Eficiencia Operativa</h3>");
             reporte.append("<p>El Margen de Utilidad se sitúa en el <b>").append(String.format("%.2f", margen)).append("%</b>. ");
             if (margen > 20) {
@@ -75,7 +75,7 @@ public class CtrlDashboard implements ActionListener {
             reporte.append("<h3>3. Nivel de Endeudamiento</h3>");
             if (deuda > 60) {
                 reporte.append("<p style='color: #E74C3C;'><b>RIESGO CRÍTICO:</b> El nivel de deuda del ").append(String.format("%.2f", deuda))
-                       .append("% supera el umbral de seguridad. Se recomienda frenar nuevas inversiones financiadas hasta estabilizar el balance.</p>");
+                    .append("% supera el umbral de seguridad. Se recomienda frenar nuevas inversiones financiadas hasta estabilizar el balance.</p>");
             } else {
                 reporte.append("<p style='color: #27AE60;'><b>Riesgo Controlado:</b> El nivel de deuda está bajo el 60%. La empresa tiene capacidad de apalancamiento estratégico.</p>");
             }

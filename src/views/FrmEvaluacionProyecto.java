@@ -28,12 +28,13 @@ public class FrmEvaluacionProyecto extends JInternalFrame {
         panelCampos.setBorder(BorderFactory.createTitledBorder("Parámetros de Inversión"));
 
         panelCampos.add(new JLabel("Inversión Inicial (C$):"));
-        txtMonto = new JTextField("5000");
-        txtMonto.putClientProperty("JTextField.placeholderText", "Ej. 150000"); // Magia FlatLaf
+        txtMonto = new JTextField("");
+        txtMonto.putClientProperty("JTextField.placeholderText", "Ej. 5000"); // Magia FlatLaf
         panelCampos.add(txtMonto);
 
         panelCampos.add(new JLabel("Tasa de Interés (%):"));
-        txtTasa = new JTextField("12");
+        txtTasa = new JTextField("");
+        txtTasa.putClientProperty("JTextField.placeholderText", "Ej. 12");
         panelCampos.add(txtTasa);
 
         panelCampos.add(new JLabel("Frecuencia:"));
@@ -41,11 +42,13 @@ public class FrmEvaluacionProyecto extends JInternalFrame {
         panelCampos.add(cbFrecuencia);
 
         panelCampos.add(new JLabel("Plazo (Periodos):"));
-        txtPlazo = new JTextField("12");
+        txtPlazo = new JTextField("");
+        txtPlazo.putClientProperty("JTextField.placeholderText", "Ej. 12");
         panelCampos.add(txtPlazo);
 
         panelCampos.add(new JLabel("Flujo de Caja Mensual (C$):"));
-        txtFlujoCaja = new JTextField("500");
+        txtFlujoCaja = new JTextField("");
+        txtFlujoCaja.putClientProperty("JTextField.placeholderText","Ej. 500");
         panelCampos.add(txtFlujoCaja);
 
         // --- CONFIGURACIÓN DE BOTONES CON ÍCONOS Y FLATLAF ---
