@@ -1,6 +1,7 @@
 package controllers;
 
 import models.MdlRatiosContables;
+import views.FrmAnalisisDialog;
 import views.FrmDashboardFinanciero;
 
 import javax.swing.*;
@@ -22,6 +23,7 @@ public class CtrlDashboard implements ActionListener {
         vista.btnGuardarTXT.addActionListener(this);
         vista.btnCalcularManual.addActionListener(this);
         vista.btnLimpiar.addActionListener(this);
+        vista.btnVerAnalisis.addActionListener(this);
     }
 
     @Override
@@ -34,6 +36,57 @@ public class CtrlDashboard implements ActionListener {
             calcularManual();
         } else if (e.getSource() == vista.btnLimpiar) {
             limpiarCampos();
+        } else if (e.getSource() == vista.btnVerAnalisis) {
+            generarAnalisisFinanciero();
+        }
+    }
+    
+    private void generarAnalisisFinanciero() {
+        try {
+            double capital = Double.parseDouble(vista.lblCapitalTrabajo.getText().replace(",", ""));
+            double margen = Double.parseDouble(vista.lblMargenUtilidad.getText().replace(" %", "").replace(",", ""));
+            double deuda = Double.parseDouble(vista.lblNivelDeuda.getText().replace(" %", "").replace(",", ""));
+
+            StringBuilder reporte = new StringBuilder();
+            reporte.append("<h2>Diagnóstico de Salud Financiera C&S</h2>");
+
+            // aqui empiezo a armar el string con etiquetas html para el capital de trabajo
+            reporte.append("<h3>1. Liquidez y Operación</h3>");
+            if (capital > 0) {
+                reporte.append("<p style='color: #27AE60;'><b>Estado Positivo:</b> El Capital de Trabajo es de C$ ").append(String.format("%.2f", capital))
+                       .append(". Esto indica que la empresa cuenta con recursos suficientes para cubrir sus obligaciones de corto plazo.");
+            } else {
+                reporte.append("<p style='color: #E74C3C;'><b>Alerta de Liquidez:</b> El Capital de Trabajo es negativo o nulo. Se recomienda revisar la gestión de activos corrientes para evitar interrupciones operativas.");
+            }
+            reporte.append("</p>");
+
+            // profe, aqui evaluo el margen, le puse colores dependiendo de si pasa de 20 o de 5 para que se entienda mejor
+            reporte.append("<h3>2. Eficiencia Operativa</h3>");
+            reporte.append("<p>El Margen de Utilidad se sitúa en el <b>").append(String.format("%.2f", margen)).append("%</b>. ");
+            if (margen > 20) {
+                reporte.append("Este nivel refleja una excelente conversión de ingresos en beneficios netos.</p>");
+            } else if (margen > 5) {
+                reporte.append("La empresa mantiene un margen saludable, aunque existe espacio para optimizar costos fijos.</p>");
+            } else {
+                reporte.append("<p style='color: #F39C12;'>El margen es reducido. Se recomienda un análisis detallado de la estructura de costos operativos.</p>");
+            }
+
+            // validacion de la deuda, si es mas de 60 se pinta en rojo alerta xd
+            reporte.append("<h3>3. Nivel de Endeudamiento</h3>");
+            if (deuda > 60) {
+                reporte.append("<p style='color: #E74C3C;'><b>RIESGO CRÍTICO:</b> El nivel de deuda del ").append(String.format("%.2f", deuda))
+                       .append("% supera el umbral de seguridad. Se recomienda frenar nuevas inversiones financiadas hasta estabilizar el balance.</p>");
+            } else {
+                reporte.append("<p style='color: #27AE60;'><b>Riesgo Controlado:</b> El nivel de deuda está bajo el 60%. La empresa tiene capacidad de apalancamiento estratégico.</p>");
+            }
+
+            // aqui mando a llamar la ventanita modal pasandole la variable reporte convertida a string
+            Window owner = SwingUtilities.getWindowAncestor(vista);
+            FrmAnalisisDialog diag = new FrmAnalisisDialog(owner, "Interpretación de Ratios Contables", reporte.toString());
+            diag.setVisible(true);
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(vista, "Ejecute un cálculo antes de solicitar el análisis detallado.");
         }
     }
 
@@ -68,7 +121,7 @@ public class CtrlDashboard implements ActionListener {
 
             new Thread(() -> {
                 try {
-                    Thread.sleep(1000); // Simulamos el cálculo
+                    Thread.sleep(1000);
 
                     double capital = modelo.calcularCapitalTrabajo(activos, pasivos);
                     double margen = modelo.calcularMargenUtilidad(utilidad, ingresos);
@@ -83,7 +136,7 @@ public class CtrlDashboard implements ActionListener {
                             vista.lblNivelDeuda.setForeground(Color.RED);
                             vista.txtHistorialAlertas.append("[ALERTA] Nivel de deuda crítico (" + String.format("%.2f", deuda) + "%)\n");
                         } else {
-                            vista.lblNivelDeuda.setForeground(new Color(39, 174, 96)); // Verde oscuro
+                            vista.lblNivelDeuda.setForeground(new Color(39, 174, 96));
                         }
 
                         vista.progressBar.setIndeterminate(false);

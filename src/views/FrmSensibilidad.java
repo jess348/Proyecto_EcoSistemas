@@ -15,7 +15,7 @@ public class FrmSensibilidad extends JInternalFrame {
 
     public FrmSensibilidad() {
         super("Módulo de Análisis de Sensibilidad (What-If)", true, true, true, true);
-        setSize(850, 520);
+        setSize(925, 600);
         setLayout(new BorderLayout(15, 15));
 
         // --- Panel Superior (Enunciado de la imagen) ---

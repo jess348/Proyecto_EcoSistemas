@@ -6,121 +6,126 @@ import java.awt.*;
 
 public class FrmDashboardFinanciero extends JInternalFrame {
 
-        public JButton btnCargarBalance;
-        public JButton btnCargarEstadoRes;
-        public JButton btnGuardarTXT;
-        public JButton btnCalcularManual;
-        public JButton btnLimpiar;
-
-        public JLabel lblCapitalTrabajo;
-        public JLabel lblMargenUtilidad;
-        public JLabel lblNivelDeuda;
-
+        public JButton btnCargarBalance, btnCargarEstadoRes, btnGuardarTXT, btnCalcularManual, btnLimpiar,
+                        btnVerAnalisis;
+        public JLabel lblCapitalTrabajo, lblMargenUtilidad, lblNivelDeuda;
         public JTextArea txtHistorialAlertas;
         public JProgressBar progressBar;
-
-        public JTextField txtActivos;
-        public JTextField txtPasivos;
-        public JTextField txtUtilidad;
-        public JTextField txtIngresos;
+        public JTextField txtActivos, txtPasivos, txtUtilidad, txtIngresos;
 
         public FrmDashboardFinanciero() {
-        // Adaptado a JInternalFrame
-        super("Dashboard de Salud Financiera", true, true, true, true);
-        setSize(930, 600); // Ajusté el tamaño para que encaje mejor en tu escritorio
-        setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
-
-        initComponents();
-
-        // Conecta el controlador automáticamente
-        new CtrlDashboard(this);
+                super("Dashboard de Salud Financiera", true, true, true, true);
+                setSize(930, 600);
+                setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+                initComponents();
+                new CtrlDashboard(this);
         }
 
         private void initComponents() {
-        setLayout(new BorderLayout(10, 10));
+                setLayout(new BorderLayout(10, 10));
 
-        // --- Panel Superior ---
-        JPanel panelSuperior = new JPanel(new FlowLayout());
-        btnCargarBalance = new JButton("Cargar Balance");
-        btnCargarEstadoRes = new JButton("Cargar Estado Resultado");
-        btnGuardarTXT = new JButton("Guardar TXT");
+                JPanel panelSuperior = new JPanel(new FlowLayout());
 
-        panelSuperior.add(btnCargarBalance);
-        panelSuperior.add(btnCargarEstadoRes);
-        panelSuperior.add(btnGuardarTXT);
-        add(panelSuperior, BorderLayout.NORTH);
+                btnCargarBalance = crearBotonConIcono(" Cargar Balance", "/images/nuevo-documentoIcono.png");
+                btnCargarEstadoRes = crearBotonConIcono(" Cargar Estado Res.", "/images/nuevo-documentoIcono.png");
+                btnGuardarTXT = crearBotonConIcono(" Guardar Informe", "/images/confirmarIcono.png");
 
-        // --- Panel Lateral (Ingreso Manual) ---
-        JPanel panelManual = new JPanel(new GridLayout(6, 2, 10, 10));
-        panelManual.setBorder(BorderFactory.createTitledBorder("Ingreso Manual"));
+                panelSuperior.add(btnCargarBalance);
+                panelSuperior.add(btnCargarEstadoRes);
+                panelSuperior.add(btnGuardarTXT);
+                add(panelSuperior, BorderLayout.NORTH);
 
-        panelManual.add(new JLabel("Activos"));
-        txtActivos = new JTextField();
-        panelManual.add(txtActivos);
+                JPanel panelManual = new JPanel(new GridLayout(6, 2, 10, 10));
+                panelManual.setBorder(BorderFactory.createTitledBorder("Ingreso Manual"));
 
-        panelManual.add(new JLabel("Pasivos"));
-        txtPasivos = new JTextField();
-        panelManual.add(txtPasivos);
+                txtActivos = crearTextField("Activos");
+                txtPasivos = crearTextField("Pasivos");
+                txtUtilidad = crearTextField("Utilidad");
+                txtIngresos = crearTextField("Ingresos");
 
-        panelManual.add(new JLabel("Utilidad"));
-        txtUtilidad = new JTextField();
-        panelManual.add(txtUtilidad);
+                panelManual.add(new JLabel("Activos:"));
+                panelManual.add(txtActivos);
+                panelManual.add(new JLabel("Pasivos:"));
+                panelManual.add(txtPasivos);
+                panelManual.add(new JLabel("Utilidad:"));
+                panelManual.add(txtUtilidad);
+                panelManual.add(new JLabel("Ingresos:"));
+                panelManual.add(txtIngresos);
 
-        panelManual.add(new JLabel("Ingresos"));
-        txtIngresos = new JTextField();
-        panelManual.add(txtIngresos);
+                btnCalcularManual = crearBotonConIcono(" Calcular", "/images/confirmarIcono.png");
+                btnCalcularManual.setBackground(new Color(39, 174, 96));
+                btnCalcularManual.setForeground(Color.WHITE);
 
-        btnCalcularManual = new JButton("Calcular");
-        panelManual.add(btnCalcularManual);
+                btnLimpiar = crearBotonConIcono(" Limpiar", "/images/borrarIcono.png");
 
-        btnLimpiar = new JButton("Limpiar");
-        panelManual.add(btnLimpiar);
+                panelManual.add(btnCalcularManual);
+                panelManual.add(btnLimpiar);
+                add(panelManual, BorderLayout.WEST);
 
-        add(panelManual, BorderLayout.WEST);
+                JPanel panelCentral = new JPanel(new GridLayout(2, 2, 10, 10));
+                lblCapitalTrabajo = crearLabelGrande();
+                lblMargenUtilidad = crearLabelGrande();
+                lblNivelDeuda = crearLabelGrande();
 
-        // --- Panel Central (Resultados) ---
-        JPanel panelCentral = new JPanel(new GridLayout(2, 2, 10, 10));
-        Font fuenteGrande = new Font("Arial", Font.BOLD, 32);
+                panelCentral.add(crearPanelIndicador("Capital de Trabajo", lblCapitalTrabajo));
+                panelCentral.add(crearPanelIndicador("Margen de Utilidad", lblMargenUtilidad));
+                panelCentral.add(crearPanelIndicador("Nivel de Deuda", lblNivelDeuda));
 
-        lblCapitalTrabajo = new JLabel("0", SwingConstants.CENTER);
-        lblCapitalTrabajo.setFont(fuenteGrande);
-        JPanel p1 = new JPanel(new BorderLayout());
-        p1.setBorder(BorderFactory.createTitledBorder("Capital de Trabajo"));
-        p1.add(lblCapitalTrabajo);
+                btnVerAnalisis = new JButton(" Ver Análisis Detallado 📊");
+                btnVerAnalisis.putClientProperty("JButton.buttonType", "roundRect");
+                btnVerAnalisis.setBackground(new Color(41, 128, 185)); // Azul corporativo
+                btnVerAnalisis.setForeground(Color.WHITE);
+                btnVerAnalisis.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
-        lblMargenUtilidad = new JLabel("0%", SwingConstants.CENTER);
-        lblMargenUtilidad.setFont(fuenteGrande);
-        JPanel p2 = new JPanel(new BorderLayout());
-        p2.setBorder(BorderFactory.createTitledBorder("Margen de Utilidad"));
-        p2.add(lblMargenUtilidad);
+                JPanel pnlAlertas = new JPanel(new BorderLayout());
+                pnlAlertas.setBorder(BorderFactory.createTitledBorder("Alertas y Diagnóstico"));
+                txtHistorialAlertas = new JTextArea();
+                txtHistorialAlertas.setEditable(false);
+                pnlAlertas.add(new JScrollPane(txtHistorialAlertas), BorderLayout.CENTER);
+                pnlAlertas.add(btnVerAnalisis, BorderLayout.SOUTH);
 
-        lblNivelDeuda = new JLabel("0%", SwingConstants.CENTER);
-        lblNivelDeuda.setFont(fuenteGrande);
-        JPanel p3 = new JPanel(new BorderLayout());
-        p3.setBorder(BorderFactory.createTitledBorder("Nivel de Deuda"));
-        p3.add(lblNivelDeuda);
+                panelCentral.add(pnlAlertas);
+                add(panelCentral, BorderLayout.CENTER);
 
-        txtHistorialAlertas = new JTextArea();
-        txtHistorialAlertas.setEditable(false);
-        JScrollPane scroll = new JScrollPane(txtHistorialAlertas);
-        JPanel p4 = new JPanel(new BorderLayout());
-        p4.setBorder(BorderFactory.createTitledBorder("Alertas"));
-        p4.add(scroll);
+                progressBar = new JProgressBar();
+                progressBar.setStringPainted(true);
+                add(progressBar, BorderLayout.SOUTH);
+        }
 
-        panelCentral.add(p1);
-        panelCentral.add(p2);
-        panelCentral.add(p3);
-        panelCentral.add(p4);
+        private JButton crearBotonConIcono(String texto, String ruta) {
+                JButton b = new JButton(texto);
+                b.setIcon(redimensionarIcono(ruta, 20, 20));
+                b.putClientProperty("JButton.buttonType", "roundRect");
+                return b;
+        }
 
-        add(panelCentral, BorderLayout.CENTER);
+        private JTextField crearTextField(String placeholder) {
+                JTextField t = new JTextField();
+                t.putClientProperty("JTextField.placeholderText", placeholder);
+                return t;
+        }
 
-        // --- Panel Inferior (Progreso) ---
-        JPanel panelInferior = new JPanel(new BorderLayout());
-        progressBar = new JProgressBar();
-        progressBar.setStringPainted(true);
-        progressBar.setString("Esperando proceso...");
-        panelInferior.add(progressBar);
+        private JLabel crearLabelGrande() {
+                JLabel l = new JLabel("0", SwingConstants.CENTER);
+                l.setFont(new Font("Arial", Font.BOLD, 32));
+                return l;
+        }
 
-        add(panelInferior, BorderLayout.SOUTH);
+        private JPanel crearPanelIndicador(String titulo, JLabel label) {
+                JPanel p = new JPanel(new BorderLayout());
+                p.setBorder(BorderFactory.createTitledBorder(titulo));
+                p.add(label);
+                return p;
+        }
+
+        private ImageIcon redimensionarIcono(String ruta, int ancho, int alto) {
+                try {
+                        ImageIcon iconoOriginal = new ImageIcon(getClass().getResource(ruta));
+                        Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(ancho, alto,
+                                        Image.SCALE_SMOOTH);
+                        return new ImageIcon(imagenEscalada);
+                } catch (Exception e) {
+                        return null;
+                }
         }
 }
