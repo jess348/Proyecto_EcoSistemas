@@ -9,6 +9,8 @@ public class FrmDashboardFinanciero extends JInternalFrame {
         public JButton btnCargarBalance;
         public JButton btnCargarEstadoRes;
         public JButton btnGuardarTXT;
+        public JButton btnCalcularManual;
+        public JButton btnLimpiar;
 
         public JLabel lblCapitalTrabajo;
         public JLabel lblMargenUtilidad;
@@ -17,92 +19,108 @@ public class FrmDashboardFinanciero extends JInternalFrame {
         public JTextArea txtHistorialAlertas;
         public JProgressBar progressBar;
 
+        public JTextField txtActivos;
+        public JTextField txtPasivos;
+        public JTextField txtUtilidad;
+        public JTextField txtIngresos;
+
         public FrmDashboardFinanciero() {
-                // Se cambió super() para heredar de JInternalFrame y soportar
-                // redimensionado/cierre
-                super("Dashboard de Salud Financiera", true, true, true, true);
-                setSize(1000, 700);
+        // Adaptado a JInternalFrame
+        super("Dashboard de Salud Financiera", true, true, true, true);
+        setSize(930, 600); // Ajusté el tamaño para que encaje mejor en tu escritorio
+        setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
 
-                // Se cambió EXIT_ON_CLOSE a DISPOSE_ON_CLOSE para no cerrar todo el programa
-                setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+        initComponents();
 
-                initComponents();
-
-                new CtrlDashboard(this);
+        // Conecta el controlador automáticamente
+        new CtrlDashboard(this);
         }
 
         private void initComponents() {
-                setLayout(new BorderLayout(10, 10));
+        setLayout(new BorderLayout(10, 10));
 
-                JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
+        // --- Panel Superior ---
+        JPanel panelSuperior = new JPanel(new FlowLayout());
+        btnCargarBalance = new JButton("Cargar Balance");
+        btnCargarEstadoRes = new JButton("Cargar Estado Resultado");
+        btnGuardarTXT = new JButton("Guardar TXT");
 
-                btnCargarBalance = new JButton("Cargar Balance");
-                btnCargarEstadoRes = new JButton("Cargar Estado Resultado");
+        panelSuperior.add(btnCargarBalance);
+        panelSuperior.add(btnCargarEstadoRes);
+        panelSuperior.add(btnGuardarTXT);
+        add(panelSuperior, BorderLayout.NORTH);
 
-                btnCargarBalance.setPreferredSize(new Dimension(180, 40));
-                btnCargarEstadoRes.setPreferredSize(new Dimension(220, 40));
+        // --- Panel Lateral (Ingreso Manual) ---
+        JPanel panelManual = new JPanel(new GridLayout(6, 2, 10, 10));
+        panelManual.setBorder(BorderFactory.createTitledBorder("Ingreso Manual"));
 
-                panelSuperior.add(btnCargarBalance);
-                panelSuperior.add(btnCargarEstadoRes);
+        panelManual.add(new JLabel("Activos"));
+        txtActivos = new JTextField();
+        panelManual.add(txtActivos);
 
-                add(panelSuperior, BorderLayout.NORTH);
+        panelManual.add(new JLabel("Pasivos"));
+        txtPasivos = new JTextField();
+        panelManual.add(txtPasivos);
 
-                JPanel panelCentral = new JPanel(new GridLayout(2, 2, 10, 10));
-                panelCentral.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panelManual.add(new JLabel("Utilidad"));
+        txtUtilidad = new JTextField();
+        panelManual.add(txtUtilidad);
 
-                Font fuenteGrande = new Font("Arial", Font.BOLD, 36);
+        panelManual.add(new JLabel("Ingresos"));
+        txtIngresos = new JTextField();
+        panelManual.add(txtIngresos);
 
-                lblCapitalTrabajo = new JLabel("0", SwingConstants.CENTER);
-                lblCapitalTrabajo.setFont(fuenteGrande);
+        btnCalcularManual = new JButton("Calcular");
+        panelManual.add(btnCalcularManual);
 
-                lblMargenUtilidad = new JLabel("0%", SwingConstants.CENTER);
-                lblMargenUtilidad.setFont(fuenteGrande);
+        btnLimpiar = new JButton("Limpiar");
+        panelManual.add(btnLimpiar);
 
-                lblNivelDeuda = new JLabel("0%", SwingConstants.CENTER);
-                lblNivelDeuda.setFont(fuenteGrande);
+        add(panelManual, BorderLayout.WEST);
 
-                JPanel p1 = new JPanel(new BorderLayout());
-                p1.setBorder(BorderFactory.createTitledBorder("Capital de Trabajo"));
-                p1.add(lblCapitalTrabajo, BorderLayout.CENTER);
+        // --- Panel Central (Resultados) ---
+        JPanel panelCentral = new JPanel(new GridLayout(2, 2, 10, 10));
+        Font fuenteGrande = new Font("Arial", Font.BOLD, 32);
 
-                JPanel p2 = new JPanel(new BorderLayout());
-                p2.setBorder(BorderFactory.createTitledBorder("Margen de Utilidad"));
-                p2.add(lblMargenUtilidad, BorderLayout.CENTER);
+        lblCapitalTrabajo = new JLabel("0", SwingConstants.CENTER);
+        lblCapitalTrabajo.setFont(fuenteGrande);
+        JPanel p1 = new JPanel(new BorderLayout());
+        p1.setBorder(BorderFactory.createTitledBorder("Capital de Trabajo"));
+        p1.add(lblCapitalTrabajo);
 
-                JPanel p3 = new JPanel(new BorderLayout());
-                p3.setBorder(BorderFactory.createTitledBorder("Nivel de Deuda"));
-                p3.add(lblNivelDeuda, BorderLayout.CENTER);
+        lblMargenUtilidad = new JLabel("0%", SwingConstants.CENTER);
+        lblMargenUtilidad.setFont(fuenteGrande);
+        JPanel p2 = new JPanel(new BorderLayout());
+        p2.setBorder(BorderFactory.createTitledBorder("Margen de Utilidad"));
+        p2.add(lblMargenUtilidad);
 
-                txtHistorialAlertas = new JTextArea();
-                txtHistorialAlertas.setEditable(false);
-                txtHistorialAlertas.setFont(new Font("Consolas", Font.PLAIN, 14));
-                JScrollPane scroll = new JScrollPane(txtHistorialAlertas);
+        lblNivelDeuda = new JLabel("0%", SwingConstants.CENTER);
+        lblNivelDeuda.setFont(fuenteGrande);
+        JPanel p3 = new JPanel(new BorderLayout());
+        p3.setBorder(BorderFactory.createTitledBorder("Nivel de Deuda"));
+        p3.add(lblNivelDeuda);
 
-                JPanel p4 = new JPanel(new BorderLayout());
-                p4.setBorder(BorderFactory.createTitledBorder("Historial de Alertas"));
-                p4.add(scroll, BorderLayout.CENTER);
+        txtHistorialAlertas = new JTextArea();
+        txtHistorialAlertas.setEditable(false);
+        JScrollPane scroll = new JScrollPane(txtHistorialAlertas);
+        JPanel p4 = new JPanel(new BorderLayout());
+        p4.setBorder(BorderFactory.createTitledBorder("Alertas"));
+        p4.add(scroll);
 
-                panelCentral.add(p1);
-                panelCentral.add(p2);
-                panelCentral.add(p3);
-                panelCentral.add(p4);
+        panelCentral.add(p1);
+        panelCentral.add(p2);
+        panelCentral.add(p3);
+        panelCentral.add(p4);
 
-                add(panelCentral, BorderLayout.CENTER);
+        add(panelCentral, BorderLayout.CENTER);
 
-                JPanel panelInferior = new JPanel(new BorderLayout());
+        // --- Panel Inferior (Progreso) ---
+        JPanel panelInferior = new JPanel(new BorderLayout());
+        progressBar = new JProgressBar();
+        progressBar.setStringPainted(true);
+        progressBar.setString("Esperando proceso...");
+        panelInferior.add(progressBar);
 
-                btnGuardarTXT = new JButton("Guardar Informe TXT");
-                btnGuardarTXT.setPreferredSize(new Dimension(200, 40));
-
-                progressBar = new JProgressBar();
-                progressBar.setIndeterminate(false);
-                progressBar.setStringPainted(true);
-                progressBar.setString("Esperando procesamiento...");
-                progressBar.setPreferredSize(new Dimension(100, 30));
-
-                panelInferior.add(btnGuardarTXT, BorderLayout.NORTH);
-                panelInferior.add(progressBar, BorderLayout.SOUTH);
-
-                add(panelInferior, BorderLayout.SOUTH);
+        add(panelInferior, BorderLayout.SOUTH);
         }
 }
