@@ -11,7 +11,6 @@ public class FrmAnalisisDialog extends JDialog {
         setLocationRelativeTo(owner);
         setLayout(new BorderLayout());
 
-        // 1. Panel de Encabezado Corporativo
         JPanel pnlHeader = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 15));
         pnlHeader.setBackground(new Color(44, 62, 80)); // Azul oscuro C&S
         
@@ -21,7 +20,6 @@ public class FrmAnalisisDialog extends JDialog {
         pnlHeader.add(lblTitulo);
         add(pnlHeader, BorderLayout.NORTH);
 
-        // 2. Área de Contenido (HTML)
         JLabel lblTexto = new JLabel();
         lblTexto.setVerticalAlignment(SwingConstants.TOP);
         lblTexto.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -32,8 +30,7 @@ public class FrmAnalisisDialog extends JDialog {
         scroll.setBorder(null);
         scroll.getViewport().setBackground(Color.WHITE);
         add(scroll, BorderLayout.CENTER);
-
-        // 3. Panel de Botones
+        
         JPanel pnlBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 15));
         pnlBotones.setBackground(new Color(245, 245, 245));
 
