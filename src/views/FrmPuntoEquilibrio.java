@@ -55,12 +55,19 @@ public class FrmPuntoEquilibrio extends JInternalFrame {
         txtCostosFijos = new JTextField();
         txtCostosFijos.putClientProperty("JTextField.placeholderText", "Ej. 1200");
         grupoCF.add(txtCostosFijos, BorderLayout.CENTER);
+
+        txtCostosFijos.putClientProperty("JTextField.showClearButton",true );
+        txtCostosFijos.putClientProperty("JCompent.outline", "focus");
+        grupoCF.add(txtCostosFijos, BorderLayout.CENTER);
+
         pnlEntrada.add(grupoCF);
 
         JPanel grupoPV = new JPanel(new BorderLayout());
         grupoPV.add(new JLabel("Precio Venta x Unidad (C$):"), BorderLayout.NORTH);
         txtPrecioVenta = new JTextField();
         txtPrecioVenta.putClientProperty("JTextField.placeholderText", "Ej. 150");
+
+        
         grupoPV.add(txtPrecioVenta, BorderLayout.CENTER);
         pnlEntrada.add(grupoPV);
 
