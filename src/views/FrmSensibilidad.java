@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class FrmSensibilidad extends JInternalFrame {
     public JSlider sldIngresos, sldCostos, sldTasa;
-    public JButton btnRecalcular, btnExportar;
+    public JButton btnRecalcular, btnExportar, btnVerAnalisis;
     public JTable tblResultados;
     public DefaultTableModel modeloTabla;
     public JProgressBar prgCalculando;
@@ -59,12 +59,26 @@ public class FrmSensibilidad extends JInternalFrame {
         JPanel pnlSur = new JPanel(new BorderLayout());
         JPanel pnlBtns = new JPanel(new GridLayout(1, 2, 10, 10));
         btnRecalcular = new JButton("RECALCULAR ESCENARIOS");
+        btnRecalcular.setIcon(redimensionarIcono("/images/confirmarIcono.png", 20, 20));
+        btnRecalcular.putClientProperty("JButton.buttonType", "roundRect");
+        btnRecalcular.setBackground(new Color(39,174,96));
         btnExportar = new JButton("Exportar a CSV 📄");
+        btnExportar.setIcon(redimensionarIcono("/images/nuevo-documentoIcono.png", 20, 20));
+        btnExportar.putClientProperty("JButton.buttonType", "roundRect");
+
         prgCalculando = new JProgressBar();
+
+        btnVerAnalisis = new JButton("Ver Análisis Detallado 📈");
+        // btnVerAnalisis.setIcon(redimensionarIcono("/images/nuevo-documentoIcono.png", 20, 20));
+        btnVerAnalisis.putClientProperty("JButton.ButtonType", "RoundRect");
+        btnVerAnalisis.setBackground(new Color(41,128,40));
+        btnVerAnalisis.setForeground(Color.WHITE);
+        btnVerAnalisis.setPreferredSize(new Dimension(0,40));
         
-        pnlBtns.add(btnRecalcular); pnlBtns.add(btnExportar);
+        pnlBtns.add(btnRecalcular); pnlBtns.add(btnExportar); pnlBtns.add(btnVerAnalisis);
         pnlSur.add(pnlBtns, BorderLayout.CENTER);
         pnlSur.add(prgCalculando, BorderLayout.SOUTH);
+        pnlSur.add(btnVerAnalisis, BorderLayout.SOUTH);
         add(pnlSur, BorderLayout.SOUTH);
     }
 
@@ -80,5 +94,15 @@ public class FrmSensibilidad extends JInternalFrame {
         lblEstadoGeneral.setText(msg);
         pnlResultadoHeader.setBackground(fondo);
         lblEstadoGeneral.setForeground(fondo.getGreen() > 150 || fondo.equals(Color.DARK_GRAY) ? Color.WHITE : Color.BLACK);
+    }
+        private ImageIcon redimensionarIcono(String ruta, int ancho, int alto) {
+        try {
+            ImageIcon iconoOriginal = new ImageIcon(getClass().getResource(ruta));
+            Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
+            return new ImageIcon(imagenEscalada);
+        } catch (Exception e) {
+            System.err.println("No se encontró el ícono en: " + ruta);
+            return null; // Devuelve nulo si falla para que el programa no se caiga
+        }
     }
 }
