@@ -1,11 +1,10 @@
 package views;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class FrmComparador extends JInternalFrame {
-    // Componentes públicos para que el Controlador pueda acceder a ellos
+    
     public JTextField txtVanA, txtTirA, txtVanB, txtTirB;
     public JButton btnComparar, btnLimpiar, btnExportar, btnVerAnalisis;
     public JLabel lblGanador;
@@ -14,39 +13,50 @@ public class FrmComparador extends JInternalFrame {
     public FrmComparador() {
         super("Comparador de Alternativas de Inversión", true, true, true, true);
         setSize(850, 500);
-        setLayout(new BorderLayout(15, 15));
+        
+        JPanel pnlPrincipal = new JPanel(new BorderLayout(15, 15));
+        pnlPrincipal.setBackground(new Color(240, 244, 248));
+        pnlPrincipal.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
         pnlResultado = new JPanel(new BorderLayout());
-        pnlResultado.setBackground(new Color(236, 240, 241));
-        pnlResultado.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        pnlResultado.setBackground(Color.WHITE);
+        pnlResultado.setBorder(crearBordeTarjeta());
         pnlResultado.setPreferredSize(new Dimension(0, 80));
         
         lblGanador = new JLabel("Esperando datos para análisis...", SwingConstants.CENTER);
-        lblGanador.setFont(new Font("Arial", Font.BOLD, 22));
+        lblGanador.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        lblGanador.setForeground(new Color(44, 62, 80));
         pnlResultado.add(lblGanador, BorderLayout.CENTER);
-        add(pnlResultado, BorderLayout.NORTH);
+        pnlPrincipal.add(pnlResultado, BorderLayout.NORTH);
 
-        JPanel pnlA = crearPanelProyecto("Proyecto A", new Color(41, 128, 185));
         txtVanA = new JTextField(); 
         txtVanA.putClientProperty("JTextField.placeholderText", "Ej. 25000");
+        aplicarSuperPoderes(txtVanA);
         txtTirA = new JTextField();
         txtTirA.putClientProperty("JTextField.placeholderText", "Ej. 15");
+        aplicarSuperPoderes(txtTirA);
+        JPanel pnlA = crearPanelProyecto("Proyecto A", new Color(41, 128, 185));
         configurarCampos(pnlA, txtVanA, txtTirA);
 
-        JPanel pnlB = crearPanelProyecto("Proyecto B", new Color(39, 174, 96));
         txtVanB = new JTextField(); 
         txtVanB.putClientProperty("JTextField.placeholderText", "Ej. 30000");
+        aplicarSuperPoderes(txtVanB);
         txtTirB = new JTextField();
         txtTirB.putClientProperty("JTextField.placeholderText", "Ej. 12");
+        aplicarSuperPoderes(txtTirB);
+        JPanel pnlB = crearPanelProyecto("Proyecto B", new Color(39, 174, 96));
         configurarCampos(pnlB, txtVanB, txtTirB);
 
         JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pnlA, pnlB);
         split.setDividerLocation(400);
-        add(split, BorderLayout.CENTER);
+        split.setBorder(null);
+        split.setBackground(new Color(240, 244, 248));
+        split.setOpaque(false);
+        pnlPrincipal.add(split, BorderLayout.CENTER);
 
-        // Se cambió a 4 columnas para que quepan los 4 botones
         JPanel pnlAcciones = new JPanel(new GridLayout(1, 4, 10, 10));
         pnlAcciones.setPreferredSize(new Dimension(0, 50));
+        pnlAcciones.setBackground(new Color(240, 244, 248));
         
         btnComparar = new JButton(" Ejecutar Comparativa");
         btnComparar.setIcon(redimensionarIcono("/images/confirmarIcono.png", 20, 20));
@@ -61,12 +71,9 @@ public class FrmComparador extends JInternalFrame {
         btnExportar = new JButton(" Exportar Comparativo");
         btnExportar.setIcon(redimensionarIcono("/images/nuevo-documentoIcono.png", 20, 20));
         btnExportar.putClientProperty("JButton.buttonType", "roundRect");
-        btnExportar.setPreferredSize(new Dimension(0,40));
         
-        // El botón Ver Análisis debe instanciarse antes de configurarlo
         btnVerAnalisis = new JButton(" Ver Análisis Detallado 📈");
         btnVerAnalisis.putClientProperty("JButton.buttonType", "roundRect");
-        btnVerAnalisis.setPreferredSize(new Dimension(0,40));
         btnVerAnalisis.setBackground(new Color(41,128,185));
         btnVerAnalisis.setForeground(Color.WHITE);
 
@@ -74,17 +81,24 @@ public class FrmComparador extends JInternalFrame {
         pnlAcciones.add(btnLimpiar);
         pnlAcciones.add(btnExportar);
         pnlAcciones.add(btnVerAnalisis);
-        add(pnlAcciones, BorderLayout.SOUTH);
+        pnlPrincipal.add(pnlAcciones, BorderLayout.SOUTH);
+
+        setContentPane(pnlPrincipal);
+    }
+
+    private void aplicarSuperPoderes(JTextField txt) {
+        txt.putClientProperty("JTextField.showClearButton", true);
+        txt.putClientProperty("JComponent.outline", "focus");
     }
 
     private JPanel crearPanelProyecto(String titulo, Color colorBase) {
         JPanel p = new JPanel(new GridLayout(5, 1, 10, 10));
-        TitledBorder border = BorderFactory.createTitledBorder(titulo);
-        border.setTitleColor(colorBase);
-        border.setTitleFont(new Font("Arial", Font.BOLD, 16));
+        p.setBackground(Color.WHITE);
         p.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createEmptyBorder(10, 10, 10, 10),
-            border
+            crearBordeTarjeta(),
+            BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), titulo,
+                javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP,
+                new Font("Segoe UI", Font.BOLD, 16), colorBase)
         ));
         return p;
     }
@@ -102,14 +116,18 @@ public class FrmComparador extends JInternalFrame {
         pnlResultado.setBackground(fondo);
     }
 
-    // Método agregado para que funcionen los íconos
+    private javax.swing.border.Border crearBordeTarjeta() {
+        javax.swing.border.Border bordeLinea = BorderFactory.createLineBorder(new Color(225, 230, 235), 1, true);
+        javax.swing.border.Border margenInterno = BorderFactory.createEmptyBorder(15, 15, 15, 15);
+        return BorderFactory.createCompoundBorder(bordeLinea, margenInterno);
+    }
+
     private ImageIcon redimensionarIcono(String ruta, int ancho, int alto) {
         try {
             ImageIcon iconoOriginal = new ImageIcon(getClass().getResource(ruta));
             Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
             return new ImageIcon(imagenEscalada);
         } catch (Exception e) {
-            System.err.println("No se encontró el ícono en: " + ruta);
             return null;
         }
     }

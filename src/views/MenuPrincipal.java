@@ -48,16 +48,29 @@ public class MenuPrincipal extends JFrame {
         setContentPane(desktop);
         setJMenuBar(createMenuBar());
 
-        // 2. DESPUÉS de inicializar el desktop, abrimos la pantalla de inicio
-        // Usamos invokeLater para asegurar que la ventana principal ya sea visible
+        // Despues de inicializar el desktop, abrimos la pantalla de inicio
+        // Se usa invokeLater para asegurar que la ventana principal ya sea visible
         SwingUtilities.invokeLater(() -> {
             try {
                 FrmInicio ventanaInicio = new FrmInicio();
                 ventManager.openInternal(desktop, ventanaInicio);
-            } catch (Exception e) {
-                System.err.println("Error al cargar la pantalla de inicio: " + e.getMessage());
-            }
-        });
+
+                ventanaInicio.setMaximum(true);
+            } catch (java.beans.PropertyVetoException e) {
+                    // por posible error para debug
+                    System.err.println("Error al maximizar la ventana de inicio: " + e.getMessage());
+                } catch (Exception e) {
+                    // por posible error para debug
+
+                    System.err.println("Error al cargar la pantalla de inicio: " + e.getMessage());
+                }
+            });
+            //         try {
+            //     vInicio.setMaximum(true); 
+            // } catch (java.beans.PropertyVetoException e) {
+            //     System.err.println("Error al maximizar la ventana de inicio: " + e.getMessage());
+            // }
+        
     }
 
     private JMenuBar createMenuBar() {
@@ -95,7 +108,14 @@ public class MenuPrincipal extends JFrame {
             case "2. Salud Financiera":
                 FrmDashboardFinanciero vDash = new FrmDashboardFinanciero();
                 ventManager.openInternal(desktop, vDash);
+
+                try {
+                    vDash.setMaximum(true);
+                } catch (java.beans.PropertyVetoException e) {
+                    System.out.println("No se pudo maximizar la ventana.");
+                }
                 break;
+
 
 
 
@@ -104,6 +124,12 @@ public class MenuPrincipal extends JFrame {
                 MdlEquilibrioOperativo mEqui = new MdlEquilibrioOperativo();
                 new CtrlPuntoEquilibrio(vEqui, mEqui);
                 ventManager.openInternal(desktop, vEqui);
+
+                try {
+                    vEqui.setMaximum(true);
+                } catch (java.beans.PropertyVetoException e) {
+                    System.out.println("No se pudo maximizar la ventana.");
+                }
                 break;
 
             case "4. Análisis de Sensibilidad (What-If)":
@@ -111,12 +137,28 @@ public class MenuPrincipal extends JFrame {
                 MdlSensibilidad mSen = new MdlSensibilidad();
                 new CtrlSensibilidad((vSen), mSen);
                 ventManager.openInternal(desktop, vSen);
+                
+
+                try {
+                    vSen.setMaximum(true);
+                } catch (java.beans.PropertyVetoException e) {
+                    System.out.println("No se pudo maximizar la ventana.");
+                }
+                break;
 
             case "5. Comparador de Alternativas":
                 FrmComparador vComp = new FrmComparador();
                 new CtrlComparador(vComp); 
-                ventManager.openInternal(desktop, vComp); 
+                ventManager.openInternal(desktop, vComp);
+
+                try {
+                    vComp.setMaximum(true);
+                } catch (java.beans.PropertyVetoException e) {
+                    System.out.println("No se pudo maximizar la ventana.");
+                }
                 break;
+
+            
 
             default:
                 JInternalFrame framePrueba = new JInternalFrame(title, true, true, true, true);
@@ -124,6 +166,10 @@ public class MenuPrincipal extends JFrame {
                 framePrueba.add(new JLabel("Módulo en construcción: " + title, SwingConstants.CENTER), BorderLayout.CENTER);
                 ventManager.openInternal(desktop, framePrueba);
                 break;
+
+
+
+
         }
     }
 }

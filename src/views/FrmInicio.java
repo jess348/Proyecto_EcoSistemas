@@ -30,7 +30,7 @@ public class FrmInicio extends JInternalFrame {
                 + "<h3 style='color: #2980B9; font-size: 16px; text-align: center; margin-top: 0px; border-bottom: 2px solid #ECF0F1; padding-bottom: 15px;'>"
                 + "Desarrollo de Software para Análisis de Inversiones e Ingeniería Económica</h3>"
                 
-                // Quiénes somos
+                // Quiénes "somos"
                 + "<h2 style='color: #34495E; font-size: 18px; margin-top: 25px;'>🏢 ¿Quiénes Somos?</h2>"
                 + "<p style='color: #555555; font-size: 13px; text-align: justify; line-height: 1.6;'>"
                 + "Somos una firma de soluciones tecnológicas con un profundo ADN en la ingeniería de sistemas y la economía corporativa. "
@@ -38,7 +38,7 @@ public class FrmInicio extends JInternalFrame {
                 + "ingeniería económica y el análisis financiero en software ágil e intuitivo, brindando a las empresas la certeza "
                 + "matemática necesaria para invertir, optimizar sus recursos y crecer sostenidamente.</p>"
                 
-                // A qué nos dedicamos
+                // A qué nos "dedicamos"
                 + "<h2 style='color: #34495E; font-size: 18px; margin-top: 25px;'>⚙️ Nuestras Soluciones</h2>"
                 + "<ul style='color: #555555; font-size: 13px; line-height: 1.6;'>"
                 + "<li><b>Evaluación de Proyectos:</b> Automatización de indicadores críticos (VAN y TIR) para comparar alternativas y proteger el capital.</li>"
@@ -46,7 +46,7 @@ public class FrmInicio extends JInternalFrame {
                 + "<li><b>Inteligencia Operativa:</b> Herramientas de cálculo para puntos de equilibrio y análisis de sensibilidad bajo múltiples escenarios.</li>"
                 + "</ul>"
                 
-                // Nuestro trasfondo
+                // "Nuestro trasfondo"
                 + "<h2 style='color: #34495E; font-size: 18px; margin-top: 25px;'>📖 Nuestro Trasfondo</h2>"
                 + "<p style='color: #555555; font-size: 13px; text-align: justify; line-height: 1.6;'>"
                 + "C&amp;S nace de una observación crítica en el ecosistema de las medianas y pequeñas empresas: la falta de herramientas "
